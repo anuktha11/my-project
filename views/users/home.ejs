@@ -1,0 +1,211 @@
+<%- include('../partials/users/header.ejs') %>
+
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- <div class="hero__categories">
+                       
+                    </div> -->
+                </div>
+                <div class="col-lg-12">
+                    <div class="hero__search">
+                        <div  >
+                                <div class="hero__search__categories">
+                                    <!-- All Categories -->
+                                    <!-- <span class="arrow_carrot-down"></span> -->
+                                </div>
+                                <!-- <input type="text" placeholder="What do yo u need?"> -->
+                                <!-- <button type="submit" class="btn btn-dark">SEARCH</button> -->
+                            
+                        </div>
+                    </div>
+                    <div class="hero__item set-bg" data-setbg="https://ii1.pepperfry.com/assets/w23-natural-plants-banner-buying-guide.jpg">
+                        <div class="hero__text" style="text-align: right;">
+                            <h2 style="font-size: 30px;"> </h2>
+                            <h6> </h6>
+                            <p><a href="/shop" class="btn btn-dark">SHOP NOW</a></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- baner Section Begin -->
+    <% if (bannerData.length> 0) { %>
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: 50px;">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <% for (let i=0; i < bannerData.length; i++) { %>
+                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                        <img src="/productimages/<%= bannerData[i].image %>" alt="Slide <%= i + 1 %>" height="400px"
+                            width="100%">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>
+                                <%= bannerData[i].header %>
+                            </h5>
+                            <p>
+                                <%= bannerData[i].description %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <% } %>
+            </div>
+            <!-- Navigation arrows -->
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <% } %>
+    <!-- Categories Section End -->
+
+            <!-- Featured Section Begin -->
+            <section class="featured spad">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-title">
+                                <h2>New Collections</h2>
+                            </div>
+                            <!-- <div class="featured__controls">
+                        <ul>
+                           
+                        </ul>
+                    </div> -->
+                        </div>
+                    </div>
+
+                    <div class="row featured__filter">
+                        <% if(productData.length>0){
+                            for (let i = productData.length - 1; i >= 0; i--){ %>
+                                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                                    <div class="featured__item">
+                                        <div class="featured__item__pic set-bg"
+                                            data-setbg="../productimages/<%=productData[i].image[0] %>">
+                                            <ul class="featured__item__pic__hover">
+                                                <li><a href="/product?id=<%= productData[i]._id%>"><i
+                                                            class="fa fa-eye view-btn"></i></a></li>
+                                                <li><a href='#' onclick="show('<%-productData[i]._id%>')"><i
+                                                            class="fa fa-shopping-cart"></i></a></li>
+                                                <li><a onclick="addtoWishlist('<%-productData[i]._id%>')"><i
+                                                            class="fa fa-heart love-btn"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="featured__item__text">
+                                            <h6><a href="#">
+                                                    <%=productData[i].name %>
+                                                </a></h6>
+                                            <h5>
+                                               ₹ <%=productData[i].price %>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } } %>
+                    </div>
+
+                </div>
+            </section>
+            <!-- Featured Section End -->
+            
+ 
+            <!-- Blog Section End -->
+
+
+            <script>
+                function show(id) {
+                    $.ajax({
+                        url: "/addToCart",
+                        method: "post",
+                        data: {
+                            id: id
+                        },
+                        success: (response) => {
+                            if (response.success) {
+                                swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Product added to cart',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: (xhr) => {
+                            if (xhr.status === 401) {
+                                window.location.href = '/login';
+                            } else if (xhr.status === 400) {
+                                const response = xhr.responseJSON;
+                                swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            }
+                        }
+                    });
+                }
+
+                function addtoWishlist(id) {
+                    console.log(id)
+                    $.ajax({
+                        url: '/addtowhishlist',
+                        method: 'post',
+                        data: {
+                            id: id
+                        },
+                        success: (response) => {
+                            if (response.status) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'product added to wishlist',
+                                    showConfirmButton: false,
+                                    timer: 1000,
+
+                                })
+
+                            } else if (response.productExit) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Product already added to wishlist',
+                                    showConfirmButton: false,
+                                    timer: 1000
+
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Plz SignIn!',
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+
+                            }
+                        }
+
+                    })
+                }
+
+            </script>
+
+
+
+
+
+            <%- include('../partials/users/footer.ejs') %>

@@ -1,0 +1,62 @@
+ 
+
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+  }
+
+  form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+
+<!-- Assuming this is your edit-address.ejs file -->
+<form method="POST" action="/edit-address/<%= index %>">
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address" value="<%= editedAddress.address %>" required>
+
+  <label for="city">City:</label>
+  <input type="text" id="city" name="city" value="<%= editedAddress.city %>" required>
+
+  <label for="state">State:</label>
+  <input type="text" id="state" name="state" value="<%= editedAddress.state %>" required>
+
+  <label for="pin">PIN:</label>
+  <input type="text" id="pin" name="pin" value="<%= editedAddress.pin %>" required>
+
+  <label for="country">Country:</label>
+  <input type="text" id="country" name="country" value="<%= editedAddress.country %>" required>
+
+  <button type="submit">Save Changes</button>
+</form>
+

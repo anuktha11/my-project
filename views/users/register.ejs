@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        /* Add your existing CSS styles here */
+        .d-none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<%- include('../partials/users/loginheader.ejs') %>
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div>
+                    <img src="https://us.123rf.com/450wm/alfazetchronicles/alfazetchronicles2309/alfazetchronicles230904347/214198835-rows-of-green-seedlings-in-a-well-lit-greenhouse-created-with-generative-ai.jpg?ver=6" height="210%" width="100%" alt=" ">
+
+                    <div class="hover">
+
+                    </div>
+                </div>
+                <p> Already Have an Account?	<a  href="/login">Login Now</a></p>
+            </div>
+            <div class="col-lg-6">
+                <div class="login_form_inner register_form_inner">
+
+                    <form class="row login_form" action="/register" method="post" id="register_form">
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="name" required name="name" placeholder="Username"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                            <div id="name_error" class="d-none" style="color: rgb(232, 9, 9);">Name should contain only alphabets</div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="email" class="form-control" id="email" required name="email"
+                                placeholder="Email Address" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Email Address'">
+                            <div id="email_error" class="d-none" style="color: rgb(232, 9, 9);">Invalid email address</div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="number" class="form-control" id="mobile" required name="mobile"
+                                placeholder="Enter mobile number" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Mobile number'">
+                            <div id="mobile_error" class="d-none" style="color: rgb(232, 9, 9);">Mobile number should be 10 digits</div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="password" class="form-control" id="password" required name="password"
+                                placeholder="Password" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Password'">
+                            <div id="password_error" class="d-none" style="color: rgb(232, 9, 9);">Password should contain 6 to 10 characters, including at least one capital letter and one number</div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="password" class="form-control" id="confirmPassword" required name="confirmPassword"
+                                placeholder="Confirm Password" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Confirm Password'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="referralCode" name="referralCode" placeholder="Referral Code (Optional)"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Referral Code'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <div class="creat_account">
+                                <!-- <input type="checkbox" id="f-option2" name="selector">
+                                <label for="f-option2">Keep me logged in</label> -->
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" value="submit" class="button button-register w-100">Register</button>
+                        </div>
+                    </form>
+
+                    <%
+                    if(typeof message !== 'undefined'){
+                      %>
+                      <h4 style="color: rgb(232, 9, 9);"><%= message %></h4>
+                      <%
+                    }
+                    %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Login Box Area =================-->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name");
+        var emailInput = document.getElementById("email");
+        var mobileInput = document.getElementById("mobile");
+        var passwordInput = document.getElementById("password");
+        var confirmPasswordInput = document.getElementById("confirmPassword");
+
+        var nameError = document.getElementById('name_error');
+        var emailError = document.getElementById('email_error');
+        var mobileError = document.getElementById('mobile_error');
+        var passwordError = document.getElementById("password_error");
+
+        // NAME VALIDATION
+        nameInput.addEventListener("input", function() {
+            var name = nameInput.value.trim();
+
+            if (/^[a-zA-Z]+$/.test(name)) {
+                nameError.classList.add("d-none");
+            } else {
+                nameError.classList.remove("d-none");
+            }
+        });
+
+        // EMAIL VALIDATION
+        emailInput.addEventListener("input", function() {
+            var email = emailInput.value;
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (emailPattern.test(email)) {
+                emailError.classList.add("d-none");
+            } else {
+                emailError.classList.remove("d-none");
+            }
+        });
+
+        // MOBILE VALIDATION
+        mobileInput.addEventListener("input", function() {
+            var mobile = mobileInput.value;
+
+            if (mobile.length === 10 && /^\d+$/.test(mobile)) {
+                mobileError.classList.add("d-none");
+            } else {
+                mobileError.classList.remove("d-none");
+            }
+        });
+
+        // PASSWORD VALIDATION
+        passwordInput.addEventListener("input", function() {
+            var password = passwordInput.value;
+
+            if (password.length >= 6 && password.length <= 10 && /[A-Z]/.test(password) && /\d/.test(password)) {
+                passwordError.classList.add("d-none");
+            } else {
+                passwordError.classList.remove("d-none");
+            }
+        });
+
+        // CONFIRM PASSWORD VALIDATION
+        confirmPasswordInput.addEventListener("input", function() {
+            var password = passwordInput.value;
+            var confirmPassword = confirmPasswordInput.value;
+
+            if (password === confirmPassword) {
+                passwordError1.classList.add("d-none");
+            } else {
+                passwordError1.classList.remove("d-none");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
